@@ -11,4 +11,4 @@ logging:
 runner:
   plugin: threaded
   options:
-      num_workers: 2
+      num_workers: 4

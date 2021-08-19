@@ -1,4 +1,8 @@
 ---
+global:
+  data:
+    asn: 65001
+
 eos:
   port: 6030
   connection_options:
@@ -8,3 +12,10 @@ eos:
       extras:
         ssh_config_file: True
         auth_strict_key: False
+
+spine:
+  data:
+    router_id: 
+    ibgp:
+      network:
+      peers:
