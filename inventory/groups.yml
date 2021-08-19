@@ -15,7 +15,15 @@ eos:
 
 spine:
   data:
-    router_id: 
+    router_id: 1
     ibgp:
-      network:
-      peers:
+      network: 2
+      peers: 3
+      rr: True
+
+leaf:
+  data:
+    router_id: 1
+    ibgp:
+      network: 2
+      peers: 3
