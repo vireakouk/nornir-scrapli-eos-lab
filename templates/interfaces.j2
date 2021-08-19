@@ -1,9 +1,9 @@
 {% for interface in host["interfaces"].values()  %}
 interface {{ interface["name"] }}
-   description {{ interface["desc"] }}
-   no switchport
-   ip address {{ interface["ipv4"] }}
-   ipv6 address {{ interface["ipv6"] }}
-   no shutdown
+    description {{ interface["desc"] }}
+    no switchport
+    ip address {{ interface["ipv4"] }}
+    ipv6 address {{ interface["ipv6"] }}
+    no shutdown
 !
 {% endfor %}

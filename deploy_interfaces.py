@@ -14,6 +14,10 @@ def deploy_int(task: Task) -> Result:
             name="Configuring interfaces!", 
             dry_run=False,
             config=task.host["config"])
+    
+    task.run(task=send_command,
+            name="Show new config",
+            command="show run")
 
 if __name__ == "__main__":
     nr = InitNornir(config_file="config.yml")

@@ -15,15 +15,10 @@ eos:
 
 spine:
   data:
-    router_id: 1
-    ibgp:
-      network: 2
-      peers: 3
-      rr: True
+    portcount_10G: 24
+    portcount_100G: 4
 
 leaf:
   data:
-    router_id: 1
-    ibgp:
-      network: 2
-      peers: 3
+    portcount_10G: 24
+    portcount_100G: 4

@@ -4,6 +4,15 @@ username {{ host["default_user"] }} privilege 15 role network-admin secret sha51
 ip routing
 !
 interface Loopback0
-   ip address {{ host["loopback_ipv4"] }}
-   ipv6 address {{ host["loopback_ipv6"] }}
+    description {{ host["lo0"]["desc"] }}
+    ip address {{ host["lo0"]["ipv4"] }}
+    ipv6 address {{ host["lo0"]["ipv6"] }}
 !
+{% for interface in host["interfaces"].values()  %}
+interface {{ interface["name"] }}
+    no description
+    no ip address
+    no ipv6 address
+    shutdown
+!
+{% endfor %}

@@ -1,0 +1,6 @@
+router bgp {{ host["asn"] }}
+ router-id {{ host["lo0"]["ipv4"] }}
+ no bgp default ipv4-unicast
+ bgp log-neighbor-changes
+ distance bgp 20 200 200
+!
