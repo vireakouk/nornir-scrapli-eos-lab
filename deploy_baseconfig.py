@@ -9,8 +9,6 @@ def deploy_base(task: Task) -> Result:
     r = task.run(task=template_file, 
                 template="base.j2", 
                 path="./templates")
-    print(task.host)
-    print(type(task.host))
                 
     task.host["config"] = r.result
 
@@ -26,5 +24,4 @@ def deploy_base(task: Task) -> Result:
 if __name__ == "__main__":
     nr = InitNornir(config_file="config.yml")
     r = nr.run(task=deploy_base)
-    print_result(r)
-    
+    print_result(r)    
