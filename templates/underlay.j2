@@ -1,6 +1,10 @@
 router bgp {{ host["asn"] }}
- router-id {{ host["lo0"]["ipv4"] }}
+ router-id {{ host["router-id"] }}
  no bgp default ipv4-unicast
  bgp log-neighbor-changes
  distance bgp 20 200 200
+{% for neighbor in host["neighbors"].values() %}
+ neighbor {{ neighbor["ipv4"] }} remote-as {{ neighbor["remote-as"] }}
+ neighbor {{ neighbor["ipv6"] }} remote-as {{ neighbor["remote-as"] }}
+{% endfor %}
 !

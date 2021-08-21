@@ -4,6 +4,7 @@ interface {{ interface["name"] }}
     no switchport
     ip address {{ interface["ipv4"] }}
     ipv6 address {{ interface["ipv6"] }}
+    mtu 9214
     no shutdown
 !
 {% endfor %}
