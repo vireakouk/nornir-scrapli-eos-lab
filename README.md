@@ -4,7 +4,7 @@ Network automation lab using nornir, scrapli, and containerlab with Arista EOS.
 # Objectives
 1. Deploy base configs to 4xArista devices via scrapli
 2. Deploy interface configs to 4xArista devices via scrapli
-3. Other tasks in progress (still learning and practicing)
+3. Deploy underlay (coming soon)
 
 # Tools
 1. Containerlab (https://containerlab.srlinux.dev/)
@@ -50,7 +50,7 @@ or use requirements.txt
 ```
 pip install -r requirements.txt
 ```
-# Booting up the lab
+# Spinning up the lab
 ```
 cd containerlab/
 sudo containerlab deploy -t eos.clab.yml
@@ -127,6 +127,11 @@ task.run(task=send_command,
             name="Show new config", 
             command="show run")
 ```
+# Verify results of interface configs 
+After the deployment, if there is no error, you should be able to ping adjacent interfaces. If you can't, check the nornir.log for clues on the errors.
+
+# Extension of script functionality 
+The template is standard jinja2 template which you can add more parameters to the base or interface configs. For example in base config, we can add further template for aaa, logging, ntp, logging..etc.
 
 # More tasks 
 (learning in progress)
