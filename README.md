@@ -69,6 +69,7 @@ This simple script achieves the following:
 2. enable ip routing,
 3. config loopback0 interface with ipv4 and ipv6,  
 4. remove all configs from other interfaces and shut them down (except loopback0 and mgmt)
+
 It does those by:
 1. Generate a temporary config per device by filling the template file templates/base.j2 with the hosts variables in the inventory files (hosts.yml, groups.yml, and defaults.yml)
 ```
@@ -101,6 +102,7 @@ python deploy_interfaces.py
 This simple script achieves the following:
 1. config interfaces with description, ipv4, ipv6, disable switchport  
 2. enable the interface with "no shutdown"
+
 It does those by:
 1. Generate a temporary config per device by filling the template file templates/interfaces.j2 by looping through interface values in hosts variables in the inventory files (hosts.yml)
 ```
