@@ -67,8 +67,7 @@ python deploy_baseconfig.py
 This simple script achieves the following:
 1. create a user account,
 2. enable ip routing,
-3. config loopback0 interface with ipv4 and ipv6,  
-4. remove all configs from other interfaces and shut them down (except loopback0 and mgmt)
+3. config loopback0 interface with ipv4 and ipv6,
 
 It does those by:
 1. Generate a temporary config per device by filling the template file templates/base.j2 with the hosts variables in the inventory files (hosts.yml, groups.yml, and defaults.yml)
