@@ -134,7 +134,7 @@ After the deployment, if there is no error, you should be able to ping adjacent 
 Follow the same concepts as the two previous tasks but using "templates/underlay.j2" instead.
 
 # Verify results of underlay configs 
-After the deployment, if there is no error, you should be all bgp adjacency established.
+After the deployment, if there is no error, you should see all bgp adjacencies established.
 ```
 spine1>show ip bgp summary
 BGP summary information for VRF default
