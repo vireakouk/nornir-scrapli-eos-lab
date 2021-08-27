@@ -1,0 +1,17 @@
+no hostname {{ host["name"] }}
+no username {{ host["default_user"] }} privilege 15 role network-admin secret sha512 {{ host["default_password_sha512"] }}
+!
+no ip routing
+!
+no interface Loopback0
+!
+{% for interface in host["interfaces"].values()  %}
+interface {{ interface["name"] }}
+    no description
+    no ip address
+    no ipv6 address
+    shutdown
+!
+{% endfor %}
+!
+no router bgp {{ host["asn"] }}
