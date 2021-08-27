@@ -4,7 +4,7 @@ Network automation lab using nornir, scrapli, and containerlab with Arista EOS.
 # Objectives
 1. Deploy base configs to 4xArista devices via scrapli
 2. Deploy interface configs to 4xArista devices via scrapli
-3. Deploy underlay (coming soon)
+3. Deploy underlay BGP configs to 4xArista devices via scrapli
 
 # Tools
 1. Containerlab (https://containerlab.srlinux.dev/)
@@ -129,6 +129,32 @@ task.run(task=send_command,
 ```
 # Verify results of interface configs 
 After the deployment, if there is no error, you should be able to ping adjacent interfaces. If you can't, check the nornir.log for clues on the errors.
+
+# Deploy underlay BGP configs (deploy_underlay.py)
+Follow the same concepts as the two previous tasks but using "templates/underlay.j2" instead.
+
+# Verify results of underlay configs 
+After the deployment, if there is no error, you should be all bgp adjacency established.
+```
+spine1>show ip bgp summary
+BGP summary information for VRF default
+Router identifier 1.1.1.1, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.1.1.1         4 65001              3         3    0    0 00:00:02 Estab   0      0
+  10.1.1.3         4 65002              3         3    0    0 00:00:02 Estab   0      0
+spine1>
+```
+```
+leaf1#show ip bgp summary
+BGP summary information for VRF default
+Router identifier 1.1.1.3, local AS number 65001
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.1.1.0         4 65000              3         3    0    0 00:00:16 Estab   0      0
+  10.1.1.4         4 65000              3         3    0    0 00:00:16 Estab   0      0
+leaf1#
+```
 
 # Extension of script functionality 
 The template is standard jinja2 template which you can add more parameters to the base or interface configs. For example in base config, we can add further template for aaa, logging, ntp, logging..etc.

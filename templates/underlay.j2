@@ -3,8 +3,14 @@ router bgp {{ host["asn"] }}
  no bgp default ipv4-unicast
  bgp log-neighbor-changes
  distance bgp 20 200 200
+ bgp allowas-in
 {% for neighbor in host["neighbors"].values() %}
  neighbor {{ neighbor["ipv4"] }} remote-as {{ neighbor["remote-as"] }}
  neighbor {{ neighbor["ipv6"] }} remote-as {{ neighbor["remote-as"] }}
+ !
+ address-family ipv4
+    neighbor {{ neighbor["ipv4"] }} activate
+ address-family ipv6
+    neighbor {{ neighbor["ipv6"] }} activate
 {% endfor %}
 !
