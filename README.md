@@ -89,9 +89,9 @@ task.run(task=send_config,
 ```
 4. Display the new changed config using scrapli send_command method:
 ```
-task.run(task=send_command, 
-            name="Show new config", 
-            command="show run")
+task.run(task=send_commands, 
+            name="Show new config and copy running config to startup config.", 
+            commands=["show run", "write memory"])
 ```
 # Deploy interface configs (deploy_interfaces.py)
 ```
@@ -122,9 +122,9 @@ task.run(task=send_config,
 ```
 4. Display the new changed config using scrapli send_command method:
 ```
-task.run(task=send_command, 
-            name="Show new config", 
-            command="show run")
+task.run(task=send_commands, 
+            name="Show new config and copy running config to startup config.", 
+            commands=["show run", "write memory"])
 ```
 # Verify results of interface configs 
 After the deployment, if there is no error, you should be able to ping adjacent interfaces. If you can't, check the nornir.log for clues on the errors.
