@@ -1,0 +1,21 @@
+service routing protocols model multi-agent
+!
+router bgp {{ host["asn"] }}
+ neighbor evpn peer group
+{% if host["role"]=="spine" %}
+ neighbor evpn next-hop-unchanged
+{% endif %}
+ neighbor evpn update-source Loopback0
+ neighbor evpn ebgp-multihop 3
+ neighbor evpn send-community extended
+ neighbor evpn maximum-routes 1000 warning-only
+{% for neighbor in host["neighbors"].values() %}
+ neighbor {{ neighbor["lo0_v4"] }} peer group evpn
+ neighbor {{ neighbor["lo0_v4"] }} remote-as {{ neighbor["remote-as"] }}
+ neighbor {{ neighbor["lo0_v6"] }} peer group evpn
+ neighbor {{ neighbor["lo0_v6"] }} remote-as {{ neighbor["remote-as"] }}
+{% endfor %}
+!
+ address-family evpn
+  neighbor evpn activate
+!
