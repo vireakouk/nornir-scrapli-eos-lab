@@ -19,3 +19,9 @@ router bgp {{ host["asn"] }}
  address-family evpn
   neighbor evpn activate
 !
+ address-family ipv4
+ no neighbor evpn activate
+!
+address-family ipv6
+ no neighbor evpn activate
+!

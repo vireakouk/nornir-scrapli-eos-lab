@@ -131,18 +131,41 @@ After the deployment, if there is no error, you should be able to ping adjacent 
 
 # Deploy underlay BGP configs (deploy_underlay.py)
 Follow the same concepts as the two previous tasks but using "templates/underlay.j2" instead.
-
 # Verify results of underlay configs 
 After the deployment, if there is no error, you should see all bgp adjacencies established.
 ```
-spine1>show ip bgp summary
+spine1#show ip bgp summary
 BGP summary information for VRF default
 Router identifier 1.1.1.1, local AS number 65000
 Neighbor Status Codes: m - Under maintenance
   Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
-  10.1.1.1         4 65001              3         3    0    0 00:00:02 Estab   0      0
-  10.1.1.3         4 65002              3         3    0    0 00:00:02 Estab   0      0
-spine1>
+  10.1.1.1         4 65001              9         8    0    0 00:02:36 Estab   2      2
+  10.1.1.3         4 65002              8         9    0    0 00:02:36 Estab   2      2
+spine1#show ipv6 bgp summary
+BGP summary information for VRF default
+Router identifier 1.1.1.1, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  2010:1:1:2::1    4 65001             22        22    0    0 00:11:37 Estab   3      3
+  2010:1:1:2::3    4 65002             20        19    0    0 00:11:38 Estab   3      3
+spine1#
+```
+```
+spine2#show ip bgp sum
+BGP summary information for VRF default
+Router identifier 1.1.1.2, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.1.1.5         4 65001             18        17    0    0 00:10:19 Estab   3      3
+  10.1.1.7         4 65002             19        20    0    0 00:10:19 Estab   3      3
+spine2#show ipv6 bgp sum
+BGP summary information for VRF default
+Router identifier 1.1.1.2, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  2010:1:1:2::5    4 65001             19        21    0    0 00:12:04 Estab   2      2
+  2010:1:1:2::7    4 65002             19        19    0    0 00:12:04 Estab   2      2
+spine2#
 ```
 ```
 leaf1#show ip bgp summary
@@ -150,13 +173,109 @@ BGP summary information for VRF default
 Router identifier 1.1.1.3, local AS number 65001
 Neighbor Status Codes: m - Under maintenance
   Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
-  10.1.1.0         4 65000              3         3    0    0 00:00:16 Estab   0      0
-  10.1.1.4         4 65000              3         3    0    0 00:00:16 Estab   0      0
+  10.1.1.0         4 65000             18        18    0    0 00:10:46 Estab   2      2
+  10.1.1.4         4 65000             18        19    0    0 00:10:45 Estab   2      2
+leaf1#show ipv6 bgp sum
+BGP summary information for VRF default
+Router identifier 1.1.1.3, local AS number 65001
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  2010:1:1:2::     4 65000             22        23    0    0 00:12:22 Estab   3      3
+  2010:1:1:2::4    4 65000             21        20    0    0 00:12:22 Estab   3      3
 leaf1#
+```
+```
+leaf2#show ip bgp summary
+BGP summary information for VRF default
+Router identifier 1.1.1.4, local AS number 65002
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  10.1.1.2         4 65000             19        18    0    0 00:11:13 Estab   3      3
+  10.1.1.6         4 65000             21        20    0    0 00:11:13 Estab   3      3
+leaf2#show ipv6 bgp summary
+BGP summary information for VRF default
+Router identifier 1.1.1.4, local AS number 65002
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  2010:1:1:2::2    4 65000             20        22    0    0 00:12:44 Estab   2      2
+  2010:1:1:2::6    4 65000             20        20    0    0 00:12:43 Estab   2      2
+leaf2#
+```
+```
+leaf1#show ip bgp
+BGP routing table information for VRF default
+Router identifier 1.1.1.3, local AS number 65001
+Route status codes: s - suppressed, * - valid, > - active, E - ECMP head, e - ECMP
+                    S - Stale, c - Contributing to ECMP, b - backup, L - labeled-unicast
+                    % - Pending BGP convergence
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI Origin Validation codes: V - valid, I - invalid, U - unknown
+AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Link Local Nexthop
+
+          Network                Next Hop              Metric  AIGP       LocPref Weight  Path
+ * >      1.1.1.1/32             10.1.1.0              0       -          100     0       65000 i
+ * >      1.1.1.2/32             10.1.1.4              0       -          100     0       65000 i
+ * >      1.1.1.3/32             -                     -       -          -       0       i
+ * >Ec    1.1.1.4/32             10.1.1.0              0       -          100     0       65000 65002 i
+ *  ec    1.1.1.4/32             10.1.1.4              0       -          100     0       65000 65002 i
+leaf1#
+```
+
+# Deploy overlay BGP configs (deploy_overlay.py)
+Follow the same concepts as the two previous tasks but using "templates/overlay.j2" instead.
+
+# Verify results of overlay configs 
+```
+spine1#show bgp evpn summary
+BGP summary information for VRF default
+Router identifier 1.1.1.1, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  1.1.1.3          4 65001             23        24    0    0 00:16:51 Estab   0      0
+  1.1.1.4          4 65002             23        24    0    0 00:16:51 Estab   0      0
+  2001:1:1:1::3    4 65001             23        23    0    0 00:16:51 Estab   0      0
+  2001:1:1:1::4    4 65002             23        23    0    0 00:16:51 Estab   0      0
+spine1#
+```
+```
+spine2#show bgp evpn summary
+BGP summary information for VRF default
+Router identifier 1.1.1.2, local AS number 65000
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  1.1.1.3          4 65001             25        25    0    0 00:17:24 Estab   0      0
+  1.1.1.4          4 65002             24        24    0    0 00:17:24 Estab   0      0
+  2001:1:1:1::3    4 65001             23        24    0    0 00:17:24 Estab   0      0
+  2001:1:1:1::4    4 65002             24        26    0    0 00:17:24 Estab   0      0
+spine2#
+```
+```
+leaf1#show bgp evpn summary
+BGP summary information for VRF default
+Router identifier 1.1.1.3, local AS number 65001
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  1.1.1.1          4 65000             22        21    0    0 00:15:13 Estab   0      0
+  1.1.1.2          4 65000             22        22    0    0 00:15:13 Estab   0      0
+  2001:1:1:1::1    4 65000             21        21    0    0 00:15:13 Estab   0      0
+  2001:1:1:1::2    4 65000             22        21    0    0 00:15:13 Estab   0      0
+leaf1#
+```
+```
+leaf2#show bgp evpn summary
+BGP summary information for VRF default
+Router identifier 1.1.1.4, local AS number 65002
+Neighbor Status Codes: m - Under maintenance
+  Neighbor         V  AS           MsgRcvd   MsgSent  InQ OutQ  Up/Down State   PfxRcd PfxAcc
+  1.1.1.1          4 65000             25        25    0    0 00:18:04 Estab   0      0
+  1.1.1.2          4 65000             24        25    0    0 00:18:04 Estab   0      0
+  2001:1:1:1::1    4 65000             25        25    0    0 00:18:03 Estab   0      0
+  2001:1:1:1::2    4 65000             26        26    0    0 00:18:04 Estab   0      0
+leaf2#
 ```
 
 # Extension of script functionality 
 The template is standard jinja2 template which you can add more parameters to the base or interface configs. For example in base config, we can add further template for aaa, logging, ntp, logging..etc.
 
-# More tasks 
-(learning in progress)
+# More configuration tasks 
+(coming soon)
