@@ -1,0 +1,16 @@
+vlan {{ host["vxlan"]["vlan_id"] }}
+ name {{ host["vxlan"]["vlan_name"] }}
+!
+interface vxlan 1
+ vxlan vlan {{ host["vxlan"]["vlan_id"] }} vni {{ host["vxlan"]["vni"] }}
+ vxlan source-int loopback0
+ vxlan udp-port 4789
+ vxlan learn-restrict any
+!
+router bgp {{ host["asn"] }}
+ !
+ vlan {{ host["vxlan"]["vlan_id"] }}
+  rd {{ host["asn"] }}:{{ host["vxlan"]["vni"] }}
+  route-target both {{ host["vxlan"]["vlan_id"] }}:{{ host["vxlan"]["vni"] }}
+  redistribute learned
+!
