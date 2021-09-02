@@ -1,4 +1,3 @@
-from logging import ERROR
 from nornir import InitNornir
 from nornir.core.task import Task, Result
 from nornir.core.filter import F
@@ -6,7 +5,7 @@ from nornir_utils.plugins.functions import print_result
 from nornir_jinja2.plugins.tasks import template_file
 from nornir_scrapli.tasks import send_commands, send_config
 
-def deploy_int(task: Task, data: dict) -> Result:
+def deploy_l2vxlan(task: Task, data: dict) -> Result:
     task.host["vxlan"] = data
     r = task.run(task=template_file, 
                 template="l2vxlan.j2",
@@ -24,9 +23,9 @@ def deploy_int(task: Task, data: dict) -> Result:
             commands=["show run", "write memory"])
 
 def get_input() -> dict:
-    print("*"*60)
-    print("* This tool will provision L2 VxLAN circuit in leaf nodes. *")
-    print("*"*60)
+    print("*"*62)
+    print("* This script will provision L2 VxLAN circuit in leaf nodes. *")
+    print("*"*62)
     data = {}
     data["vlan_id"] = input("Enter the vlan ID (ex: 10): ")
     data["vlan_name"] = input("Enter the vlan name (ex: CUST-ABC): ")
@@ -42,8 +41,8 @@ if __name__ == "__main__":
     nr = InitNornir(config_file="config.yml")
     try:
         nr = nr.filter(F(switchname=user_input["a_end"]) | F(switchname=user_input["b_end"]))
-        r = nr.run(task=deploy_int, data=user_input)
+        r = nr.run(task=deploy_l2vxlan, data=user_input)
         print_result(r)
     except KeyError as e:
-        print(f"Could not find the switch: {e}")
+        print(f"Could not find device: {e}")
     

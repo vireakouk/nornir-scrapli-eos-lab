@@ -3,8 +3,10 @@ Network automation lab using nornir, scrapli, and containerlab with Arista EOS.
 
 # Objectives
 1. Deploy base configs to 4xArista devices via scrapli
-2. Deploy interface configs to 4xArista devices via scrapli
-3. Deploy underlay BGP configs to 4xArista devices via scrapli
+2. Deploy interface configs
+3. Deploy underlay BGP configs to
+4. Deploy overlay BGP EVPN configs 
+5. Provision vxlan across leaf nodes with user-defined parameters
 
 # Tools
 1. Containerlab (https://containerlab.srlinux.dev/)
@@ -273,7 +275,169 @@ Neighbor Status Codes: m - Under maintenance
   2001:1:1:1::2    4 65000             26        26    0    0 00:18:04 Estab   0      0
 leaf2#
 ```
+# Provision Vxlan (provision_l2vxlan.py)
+The script takes user inputs such as vlan ID, VNI, name, A-end device, and B-end. It stores the user input in the host dictionary with abitrary key ["vxlan"] and deploy the configs to devices of user's inputs in A-end and B-end.
+```
+from nornir import InitNornir
+from nornir.core.task import Task, Result
+from nornir.core.filter import F
+from nornir_utils.plugins.functions import print_result
+from nornir_jinja2.plugins.tasks import template_file
+from nornir_scrapli.tasks import send_commands, send_config
 
+def deploy_l2vxlan(task: Task, data: dict) -> Result:
+    task.host["vxlan"] = data
+    r = task.run(task=template_file, 
+                template="l2vxlan.j2",
+                path="./templates")
+    task.host["config"] = r.result
+
+
+    task.run(task=send_config, 
+            name="Provisioning L2 VXLAN!", 
+            dry_run=False,
+            config=task.host["config"])
+    
+    task.run(task=send_commands, 
+            name="Show new config and copy running config to startup config.", 
+            commands=["show run", "write memory"])
+
+def get_input() -> dict:
+    print("*"*62)
+    print("* This script will provision L2 VxLAN circuit in leaf nodes. *")
+    print("*"*62)
+    data = {}
+    data["vlan_id"] = input("Enter the vlan ID (ex: 10): ")
+    data["vlan_name"] = input("Enter the vlan name (ex: CUST-ABC): ")
+    data["vni"] = input("Enter the vni (ex: 10010): ")
+    data["a_end"] = input("Enter the A-end switch name: ")
+    data["b_end"] = input("Enter the B-end switch name: ")
+    
+    return data
+
+
+if __name__ == "__main__":
+    user_input = get_input()
+    nr = InitNornir(config_file="config.yml")
+    try:
+        nr = nr.filter(F(switchname=user_input["a_end"]) | F(switchname=user_input["b_end"]))
+        r = nr.run(task=deploy_l2vxlan, data=user_input)
+        print_result(r)
+    except KeyError as e:
+        print(f"Could not find device: {e}")
+```
+```
+~/projects/nornir-scrapli-eos-lab master* ❯ python provision_l2vxlan.py                                                                                                                 8s nornir-scrapli-eos-lab
+**************************************************************
+* This script will provision L2 VxLAN circuit in leaf nodes. *
+**************************************************************
+Enter the vlan ID (ex: 10): 11
+Enter the vlan name (ex: CUST-ABC): CUST-TEST
+Enter the vni (ex: 10010): 10011
+Enter the A-end switch name: leaf1
+Enter the B-end switch name: leaf2
+/home/vireak/projects/nornir-scrapli-eos-lab/env/lib/python3.8/site-packages/scrapli/helper.py:290: UserWarning:
+
+******************************************************************************************** Authentication Warning! *********************************************************************************************
+    scrapli will try to escalate privilege without entering a password but may fail.
+Set an 'auth_secondary' password if your device requires a password to increase privilege, otherwise ignore this message.
+******************************************************************************************************************************************************************************************************************
+
+  warn(warning_message)
+deploy_l2vxlan******************************************************************
+* leaf1.eos ** changed : True **************************************************
+vvvv deploy_l2vxlan ** changed : False vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv INFO
+---- template_file ** changed : False ------------------------------------------ INFO
+vlan 11
+ name CUST-TEST
+!
+interface vxlan 1
+ vxlan vlan 11 vni 10011
+ vxlan source-int loopback0
+ vxlan udp-port 4789
+ vxlan learn-restrict any
+!
+router bgp 65001
+ !
+ vlan 11
+  rd 65001:10011
+  route-target both 11:10011
+  redistribute learned
+!
+---- Provisioning L2 VXLAN! ** changed : True ---------------------------------- INFO
+vlan 11
+ name CUST-TEST
+!
+interface vxlan 1
+ vxlan vlan 11 vni 10011
+ vxlan source-int loopback0
+ vxlan udp-port 4789
+ vxlan learn-restrict any
+!
+router bgp 65001
+ !
+ vlan 11
+  rd 65001:10011
+  route-target both 11:10011
+  redistribute learned
+!
+
+---- Show new config and copy running config to startup config. ** changed : False  INFO
+```
+# Verify vxlan provisioning
+```
+leaf1>show interfaces vxlan 1
+Vxlan1 is up, line protocol is up (connected)
+  Hardware is Vxlan
+  Source interface is Loopback0 and is active with 1.1.1.3
+  Replication/Flood Mode is headend with Flood List Source: EVPN
+  Remote MAC learning via EVPN
+  VNI mapping to VLANs
+  Static VLAN to VNI mapping is
+    [64, 10064]
+  Note: All Dynamic VLANs used by VCS are internal VLANs.
+        Use 'show vxlan vni' for details.
+  Static VRF to VNI mapping is not configured
+  Headend replication flood vtep list is:
+    64 1.1.1.4
+  MLAG Shared Router MAC is 0000.0000.0000
+leaf1>show vxlan vtep
+Remote VTEPS for Vxlan1:
+
+VTEP          Tunnel Type(s)
+------------- --------------
+1.1.1.4       flood
+
+Total number of remote VTEPS:  1
+leaf1>
+```
+```
+leaf2#show interfaces vxlan 1
+Vxlan1 is up, line protocol is up (connected)
+  Hardware is Vxlan
+  Source interface is Loopback0 and is active with 1.1.1.4
+  Replication/Flood Mode is headend with Flood List Source: EVPN
+  Remote MAC learning via EVPN
+  VNI mapping to VLANs
+  Static VLAN to VNI mapping is
+    [11, 10011]       [64, 10064]
+  Note: All Dynamic VLANs used by VCS are internal VLANs.
+        Use 'show vxlan vni' for details.
+  Static VRF to VNI mapping is not configured
+  Headend replication flood vtep list is:
+    11 1.1.1.3
+    64 1.1.1.3
+  MLAG Shared Router MAC is 0000.0000.0000
+leaf2#show vxlan vtep
+Remote VTEPS for Vxlan1:
+
+VTEP          Tunnel Type(s)
+------------- --------------
+1.1.1.3       flood
+
+Total number of remote VTEPS:  1
+leaf2#
+```
 # Extension of script functionality 
 The template is standard jinja2 template which you can add more parameters to the base or interface configs. For example in base config, we can add further template for aaa, logging, ntp, logging..etc.
 
