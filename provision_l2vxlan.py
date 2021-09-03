@@ -30,8 +30,10 @@ def get_input() -> dict:
     data["vlan_id"] = input("Enter the vlan ID (ex: 10): ")
     data["vlan_name"] = input("Enter the vlan name (ex: CUST-ABC): ")
     data["vni"] = input("Enter the vni (ex: 10010): ")
-    data["a_end"] = input("Enter the A-end switch name: ")
-    data["b_end"] = input("Enter the B-end switch name: ")
+    data["a_end"] = input("Enter the A-end switch name (ex: leaf1): ")
+    data["a_if"] = input("Enter the A-end switch port (ex: Eth3): ")
+    data["b_end"] = input("Enter the B-end switch name (ex: leaf2): ")
+    data["b_if"] = input("Enter the B-end switch port (ex: Eth3): ")
     
     return data
 

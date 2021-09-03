@@ -7,6 +7,28 @@ interface vxlan 1
  vxlan udp-port 4789
  vxlan learn-restrict any
 !
+{% if host["switchname"]==host["vxlan"]["a_end"] %}
+interface {{ host["vxlan"]["a_if"] }}
+   description {{ host["vxlan"]["vlan_name"] }}
+   mtu 9214
+   switchport
+   switchport access vlan {{ host["vxlan"]["vlan_id"] }}
+   no ip address
+   no ipv6 address
+   no shutdown
+!
+{% endif %}
+{% if host["switchname"]==host["vxlan"]["b_end"] %}
+interface {{ host["vxlan"]["b_if"] }}
+   description {{ host["vxlan"]["vlan_name"] }}
+   mtu 9214
+   switchport
+   switchport access vlan {{ host["vxlan"]["vlan_id"] }}
+   no ip address
+   no ipv6 address
+   no shutdown
+!
+{% endif %}
 router bgp {{ host["asn"] }}
  !
  vlan {{ host["vxlan"]["vlan_id"] }}
