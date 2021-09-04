@@ -1,4 +1,5 @@
 {% for interface in host["interfaces"].values()  %}
+{% if interface["role"]=="fabric" %}
 interface {{ interface["name"] }}
     description {{ interface["desc"] }}
     no switchport
@@ -7,4 +8,5 @@ interface {{ interface["name"] }}
     mtu 9214
     no shutdown
 !
+{% endif %}
 {% endfor %}

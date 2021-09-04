@@ -1,0 +1,48 @@
+vrf instance {{ host["vrf"]["name"] }}
+!
+ip routing vrf {{ host["vrf"]["name"] }}
+!
+vlan {{ host["vrf"]["vlan_id"] }}
+ name {{ host["vrf"]["name"] }}
+!
+int vlan {{ host["vrf"]["vlan_id"] }}
+ vrf {{ host["vrf"]["name"] }}
+ {% if host["name"]==host["vrf"]["a_end"] %}
+ ip address {{ host["vrf"]["a_ipv4"] }}
+ ip virtual-router address {{ host["vrf"]["a_vipv4"] }}
+ {% elif host["name"]==host["vrf"]["b_end"] %}
+ ip address {{ host["vrf"]["b_ipv4"] }}
+ ip virtual-router address {{ host["vrf"]["b_vipv4"] }}
+ {% endif %}
+!
+int vxlan1
+  vxlan vrf {{ host["vrf"]["name"] }} vni {{ host["vrf"]["vni"] }}
+!
+{% if host["name"]==host["vrf"]["a_end"] %}
+interface {{ host["vrf"]["a_if"] }}
+   description {{ host["vrf"]["name"] }}
+   mtu 9214
+   switchport
+   switchport access vlan {{ host["vrf"]["vlan_id"] }}
+   no ip address
+   no ipv6 address
+   no shutdown
+!
+{% endif %}
+{% if host["name"]==host["vrf"]["b_end"] %}
+interface {{ host["vrf"]["b_if"] }}
+   description {{ host["vrf"]["name"] }}
+   mtu 9214
+   switchport
+   switchport access vlan {{ host["vrf"]["vlan_id"] }}
+   no ip address
+   no ipv6 address
+   no shutdown
+!
+{% endif %}
+router bgp {{ host["asn"] }}
+ vrf {{ host["vrf"]["name"] }}
+    rd {{ host["router-id"] }}:{{ host["vrf"]["vlan_id"] }}
+    route-target both {{ host["vrf"]["vlan_id"] }}:{{ host["vrf"]["vni"] }}
+    redistribute connected
+!

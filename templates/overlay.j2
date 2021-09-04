@@ -1,5 +1,10 @@
 service routing protocols model multi-agent
 !
+interface vxlan 1
+ vxlan source-int loopback0
+ vxlan udp-port 4789
+ vxlan learn-restrict any
+!
 router bgp {{ host["asn"] }}
  neighbor evpn peer group
 {% if host["role"]=="spine" %}

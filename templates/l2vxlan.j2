@@ -3,11 +3,8 @@ vlan {{ host["vxlan"]["vlan_id"] }}
 !
 interface vxlan 1
  vxlan vlan {{ host["vxlan"]["vlan_id"] }} vni {{ host["vxlan"]["vni"] }}
- vxlan source-int loopback0
- vxlan udp-port 4789
- vxlan learn-restrict any
 !
-{% if host["switchname"]==host["vxlan"]["a_end"] %}
+{% if host["name"]==host["vxlan"]["a_end"] %}
 interface {{ host["vxlan"]["a_if"] }}
    description {{ host["vxlan"]["vlan_name"] }}
    mtu 9214
@@ -18,7 +15,7 @@ interface {{ host["vxlan"]["a_if"] }}
    no shutdown
 !
 {% endif %}
-{% if host["switchname"]==host["vxlan"]["b_end"] %}
+{% if host["name"]==host["vxlan"]["b_end"] %}
 interface {{ host["vxlan"]["b_if"] }}
    description {{ host["vxlan"]["vlan_name"] }}
    mtu 9214
