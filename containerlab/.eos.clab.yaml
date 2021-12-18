@@ -1,0 +1,47 @@
+name: eos
+
+topology:
+  kinds:
+    ceos:
+      image: ceosimage:4.26.1F
+    linux:
+      image: ghcr.io/hellt/network-multitool
+  nodes:
+    spine1:
+      kind: ceos
+      mgmt_ipv4: 172.100.1.11
+    spine2:
+      kind: ceos
+      mgmt_ipv4: 172.100.1.12
+    leaf1:
+      kind: ceos
+      mgmt_ipv4: 172.100.1.13
+    leaf2:
+      kind: ceos
+      mgmt_ipv4: 172.100.1.14
+
+    client1:
+      kind: linux
+      mgmt_ipv4: 172.100.1.21
+      env:
+        TMODE: static
+    client2:
+      kind: linux
+      mgmt_ipv4: 172.100.1.22
+      env:
+        TMODE: static
+
+  links:
+    # leaf to spine links POD1
+    - endpoints: ["leaf1:eth1", "spine1:eth1"]
+    - endpoints: ["leaf1:eth2", "spine2:eth1"]
+    - endpoints: ["leaf2:eth1", "spine1:eth2"]
+    - endpoints: ["leaf2:eth2", "spine2:eth2"]
+
+    # client connection links
+    - endpoints: ["client1:eth1", "leaf1:eth3"]
+    - endpoints: ["client2:eth1", "leaf2:eth3"]
+mgmt:
+  network: eos_oob               
+  ipv4_subnet: 172.100.1.0/24       
+  ipv6_subnet: 2001:172:100:1::/80
