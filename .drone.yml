@@ -4,7 +4,7 @@ name: netdevops cicd proof of concept
 
 steps:
   - name: starting build
-    image: vireakouk/netdevops-drone-nornir-scrapli
+    image: vireakouk/netdevops-drone-nornir-scrapli:1.0
     commands:
       - echo 'starting build'
       - git fetch
