@@ -11,13 +11,13 @@ steps:
       - git fetch
       - git checkout ${DRONE_BRANCH}
   
-  # - name: dry run
-  #   image: vireakouk/netdevops-drone-nornir-scrapli
-  #   commands:
-  #     - python deploy_baseconfig.py --dry-run
-  #   when:
-  #     branch:
-  #       - dev
+  - name: dry run
+    image: vireakouk/netdevops-drone-nornir-scrapli
+    commands:
+      - echo 'dry run'
+    when:
+      branch:
+        - dev
   
   # - name: merge to main 
   #   image: vireakouk/netdevops-drone-nornir-scrapli
