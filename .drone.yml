@@ -12,7 +12,7 @@ steps:
       - git checkout ${DRONE_BRANCH}
   
   - name: dry run
-    image: vireakouk/netdevops-drone-nornir-scrapli
+    image: vireakouk/netdevops-drone-nornir-scrapli:1.0
     commands:
       - echo 'dry run'
     when:
