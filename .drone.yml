@@ -8,7 +8,7 @@ steps:
     commands:
       - echo 'starting build'
       - echo 'hello world'
-      - git fetch
+      - git fetch ${DRONE_GITLAB_SERVER}/${DRONE_REPO}
       - git checkout ${DRONE_BRANCH}
   
   # - name: dry run
