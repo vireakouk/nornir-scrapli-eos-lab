@@ -10,42 +10,42 @@ steps:
       - git fetch
       - git checkout ${DRONE_BRANCH}
   
-  - name: dry run
-    image: vireakouk/netdevops-drone-nornir-scrapli
-    commands:
-      - python deploy_baseconfig.py --dry-run
-    when:
-      branch:
-        - dev
+  # - name: dry run
+  #   image: vireakouk/netdevops-drone-nornir-scrapli
+  #   commands:
+  #     - python deploy_baseconfig.py --dry-run
+  #   when:
+  #     branch:
+  #       - dev
   
-  - name: merge to main 
-    image: vireakouk/netdevops-drone-nornir-scrapli
-    commands:
-      - git checkout main
-      - git branch -u origin/main
-      - git merge dev
-      - git push http://$GITLAB_USER:$GITLAB_PASS:192.168.1.200/vireakouk/${DRONE_REPO}
-    secrets: [ GITLAB_USER, GITLAB_PASS ]
-    when:
-      branch:
-        - dev
+  # - name: merge to main 
+  #   image: vireakouk/netdevops-drone-nornir-scrapli
+  #   commands:
+  #     - git checkout main
+  #     - git branch -u origin/main
+  #     - git merge dev
+  #     - git push http://$GITLAB_USER:$GITLAB_PASS:192.168.1.200/vireakouk/${DRONE_REPO}
+  #   secrets: [ GITLAB_USER, GITLAB_PASS ]
+  #   when:
+  #     branch:
+  #       - dev
         
-  - name: deploy to production
-    image: vireakouk/netdevops-drone-nornir-scrapli
-    commands:
-      - python deploy_baseconfig.py
-    when:
-      branch:
-        - main
+  # - name: deploy to production
+  #   image: vireakouk/netdevops-drone-nornir-scrapli
+  #   commands:
+  #     - python deploy_baseconfig.py
+  #   when:
+  #     branch:
+  #       - main
 
-  - name: send telegram notification
-    image: appleboy/drone-telegram
-    settings:
-      token: xxxxxxxxxx
-      to: telegram_user_id
-      message: >
-        {{#success build.status}}
-          build {{build.number}} succeeded. Good job.
-        {{else}}
-          build {{build.number}} failed. Fix me please.
-        {{/success}}
+  # - name: send telegram notification
+  #   image: appleboy/drone-telegram
+  #   settings:
+  #     token: xxxxxxxxxx
+  #     to: telegram_user_id
+  #     message: >
+  #       {{#success build.status}}
+  #         build {{build.number}} succeeded. Good job.
+  #       {{else}}
+  #         build {{build.number}} failed. Fix me please.
+  #       {{/success}}
