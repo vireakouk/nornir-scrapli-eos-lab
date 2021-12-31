@@ -16,6 +16,8 @@ steps:
     commands:
       - echo 'dry run'
       - git --version
+      - python --version
+      - pip list
     when:
       branch:
         - dev
