@@ -8,8 +8,8 @@ steps:
     commands:
       - echo 'starting build'
       - echo 'hello world'
-      - git fetch
-      - git checkout ${DRONE_BRANCH}
+      # - git fetch
+      # - git checkout ${DRONE_BRANCH}
   
   - name: dry run
     image: vireakouk/netdevops-drone-nornir-scrapli:1.0
