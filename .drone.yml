@@ -15,6 +15,7 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:1.0
     commands:
       - echo 'dry run'
+      - git --version
     when:
       branch:
         - dev
