@@ -16,9 +16,7 @@ steps:
   - name: dry run
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
-      - git --version
-      - python --version
-      - pip list
+      - python deploy_baseconfig.py --dry_run
     when:
       branch:
         - dev

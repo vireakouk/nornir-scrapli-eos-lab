@@ -1,8 +1,20 @@
+from typing_extensions import TypeVarTuple, runtime
 from nornir import InitNornir
 from nornir.core.task import Task, Result
 from nornir_utils.plugins.functions import print_result
 from nornir_jinja2.plugins.tasks import template_file
 from nornir_scrapli.tasks import send_config, send_commands
+import argparse
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument("--dry_run", dest="drill", action="store_true", help="This is a drill.")
+parser.add_argument("--no_dry_run", dest="drill", action="store_false", help="This is not a drill.")
+parser.set_defaults(drill=True)
+args = parser.parse_args()
+
+dry_run = args.drill
+
 
 
 def deploy_base(task: Task) -> Result:
