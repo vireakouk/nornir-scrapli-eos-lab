@@ -7,13 +7,10 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--dry_run", dest="drill", action="store_true", help="This is a drill.")
-parser.add_argument("--no_dry_run", dest="drill", action="store_false", help="This is not a drill.")
-parser.set_defaults(drill=True)
+parser.add_argument("--dry_run", dest="drill", action="store_true", default=False, help="This is a drill.")
 args = parser.parse_args()
 
-dry_run = args.drill
-
+isDryrun = args.drill
 
 
 def deploy_base(task: Task) -> Result:
@@ -25,7 +22,7 @@ def deploy_base(task: Task) -> Result:
 
     task.run(task=send_config,
             name="Deploy base configuration on the device.",
-            dry_run=False,
+            dry_run=isDryrun,
             config=task.host["config"])
 
     task.run(task=send_commands, 
