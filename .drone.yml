@@ -7,7 +7,9 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - echo 'starting build'
-      - echo 'hello world'
+      - git --version
+      - python --version
+      - pip list
       - git fetch
       - git checkout ${DRONE_BRANCH}
   
