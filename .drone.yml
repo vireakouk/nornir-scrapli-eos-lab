@@ -4,7 +4,7 @@ name: netdevops cicd
 
 steps:
   - name: starting build
-    image: vireakouk/netdevops-drone-nornir-scrapli:1.0
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - echo 'starting build'
       - echo 'hello world'
@@ -12,7 +12,7 @@ steps:
       # - git checkout ${DRONE_BRANCH}
   
   - name: dry run
-    image: vireakouk/netdevops-drone-nornir-scrapli:1.0
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - echo 'dry run'
       - git --version
