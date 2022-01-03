@@ -17,7 +17,7 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     secrets: [ NORNIR_USER, NORNIR_SECRET ]      
     commands:
-      - echo "Dry run using " ${NORNIR_USER} "account"
+      - echo $NORNIR_USER
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
