@@ -22,7 +22,7 @@ steps:
         - dev
   
   # - name: merge to main 
-  #   image: vireakouk/netdevops-drone-nornir-scrapli
+  #   image: vireakouk/netdevops-drone-nornir-scrapli:latest
   #   commands:
   #     - git checkout main
   #     - git branch -u origin/main
