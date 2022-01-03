@@ -15,6 +15,7 @@ steps:
   
   - name: dry run
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    secrets: [ NORNIR_USER, NORNIR_SECRET ]      
     commands:
       - python deploy_baseconfig.py --dry_run
     when:

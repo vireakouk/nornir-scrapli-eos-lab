@@ -3,6 +3,7 @@ from nornir.core.task import Task, Result
 from nornir_utils.plugins.functions import print_result
 from nornir_jinja2.plugins.tasks import template_file
 from nornir_scrapli.tasks import send_config, send_commands
+from utils import nornir_set_creds
 import argparse
 
 parser = argparse.ArgumentParser()
@@ -31,5 +32,6 @@ def deploy_base(task: Task) -> Result:
 
 if __name__ == "__main__":
     nr = InitNornir(config_file="config.yml")
+    nornir_set_creds(nr)
     r = nr.run(task=deploy_base)
     print_result(r)    
