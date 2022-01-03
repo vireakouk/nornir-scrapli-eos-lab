@@ -21,7 +21,7 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - pip install nornir_jinja2
+      - pip install nornir_jinja2 nornir_scrapli
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
