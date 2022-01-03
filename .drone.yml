@@ -2,12 +2,6 @@ kind: pipeline
 type: docker
 name: netdevops cicd
 
-environment:
-    NORNIR_USER:
-      from_secret: NORNIR_USER
-    NORNIR_SECRET:
-      from_secret: NORNIR_SECRET
-
 steps:
   - name: starting build
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
@@ -21,6 +15,11 @@ steps:
   
   - name: dry run
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    environment:
+      NORNIR_USER:
+        from_secret: NORNIR_USER
+      NORNIR_SECRET:
+        from_secret: NORNIR_SECRET
     commands:
       - echo ${NORNIR_USER}
       - python deploy_baseconfig.py --dry_run
