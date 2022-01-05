@@ -9,36 +9,24 @@ topology:
   nodes:
     spine1:
       kind: ceos
-      publish:
-        - tcp/22
       mgmt_ipv4: 172.100.1.11
     spine2:
       kind: ceos
-      publish:
-        - tcp/22
       mgmt_ipv4: 172.100.1.12
     leaf1:
       kind: ceos
-      publish:
-        - tcp/22
       mgmt_ipv4: 172.100.1.13
     leaf2:
       kind: ceos
-      publish:
-        - tcp/22
       mgmt_ipv4: 172.100.1.14
 
     client1:
       kind: linux
-      publish:
-        - tcp/22
       mgmt_ipv4: 172.100.1.21
       env:
         TMODE: static
     client2:
       kind: linux
-      publish:
-        - tcp/22
       mgmt_ipv4: 172.100.1.22
       env:
         TMODE: static
