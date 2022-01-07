@@ -10,6 +10,7 @@ steps:
       - git --version
       - python --version
       - pip list
+      - ip route
       - git fetch
       - git checkout ${DRONE_BRANCH}
   
@@ -21,6 +22,8 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
+      - ip route add 172.100.1.0/24 via 172.17.0.1
+      - ip route
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
