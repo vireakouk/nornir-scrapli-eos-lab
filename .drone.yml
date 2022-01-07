@@ -10,7 +10,7 @@ steps:
       - git --version
       - python --version
       - pip list
-      - ip route
+      - route -n
       - git fetch
       - git checkout ${DRONE_BRANCH}
   
