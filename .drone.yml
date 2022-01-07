@@ -10,12 +10,11 @@ steps:
       - git --version
       - python --version
       - pip list
-      - route -n
       - git fetch
       - git checkout ${DRONE_BRANCH}
   
   - name: dry run
-    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    image: ubuntu:20.04
     environment:
       NORNIR_USER:
         from_secret: NORNIR_USER
@@ -24,6 +23,7 @@ steps:
     commands:
       - ip route add 172.100.1.0/24 via 172.17.0.1
       - ip route
+      - pip install nornir nornir-jinja2 nornir-scrapli nornir-utils
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
