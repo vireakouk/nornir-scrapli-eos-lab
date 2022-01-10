@@ -21,7 +21,6 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - apt-get install openssh-server
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
