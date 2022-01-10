@@ -12,7 +12,6 @@ steps:
       - pip list
       - git fetch
       - git checkout ${DRONE_BRANCH}
-      - ssh admin@172.17.0.6
   
   - name: dry run
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
