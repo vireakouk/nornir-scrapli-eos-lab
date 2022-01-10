@@ -32,13 +32,13 @@ steps:
     environment:
       GITLAB_USER:
         from_secret: GITLAB_USER
-      GITLAB_USER:
-        from_secret: GITLAB_USER
+      GITLAB_PASS:
+        from_secret: GITLAB_PASS
     commands:
       - git checkout main
       - git branch -u origin/main
       - git merge dev
-      - git push http://$GITLAB_USER:$GITLAB_PASS:192.168.1.200/${DRONE_REPO}
+      - git push http://$GITLAB_USER:$GITLAB_PASS:192.168.1.200/${DRONE_REPO}.git
     when:
       branch:
         - dev
