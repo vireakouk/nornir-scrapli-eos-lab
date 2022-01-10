@@ -7,7 +7,7 @@ eos:
   # port: 6030
   connection_options:
     scrapli:
-      # platform: arista_eos
+      platform: arista_eos
       # port: 22
       extras:
         # ssh_config_file: True
