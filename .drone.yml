@@ -21,9 +21,6 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - route -n
-      - ip route add 172.100.1.0/24 via 172.17.0.1
-      - ip route
       - pip install nornir nornir-jinja2 nornir-scrapli nornir-utils
       - python deploy_baseconfig.py --dry_run
     when:
