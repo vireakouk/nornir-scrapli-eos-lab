@@ -21,7 +21,7 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - git branch
+      - git checkout ${DRONE_BRANCH}
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
