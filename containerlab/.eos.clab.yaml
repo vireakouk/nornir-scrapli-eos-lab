@@ -42,6 +42,6 @@ topology:
     - endpoints: ["client1:eth1", "leaf1:eth3"]
     - endpoints: ["client2:eth1", "leaf2:eth3"]
 mgmt:
-  network: bridge               
+  network: cicd-net               
   # ipv4_subnet: 172.100.1.0/24       
   # ipv6_subnet: 2001:172:100:1::/80
