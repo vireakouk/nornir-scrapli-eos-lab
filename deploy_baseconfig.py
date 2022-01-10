@@ -32,6 +32,6 @@ def deploy_base(task: Task) -> Result:
 
 if __name__ == "__main__":
     nr = InitNornir(config_file="config.yml")
-    # nornir_set_creds(nr)
+    nornir_set_creds(nr)
     r = nr.run(task=deploy_base)
     print_result(r)    
