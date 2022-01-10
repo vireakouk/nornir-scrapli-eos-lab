@@ -23,6 +23,7 @@ steps:
     commands:
       - apt-get install net-tools
       - route
+      - git fetch
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
