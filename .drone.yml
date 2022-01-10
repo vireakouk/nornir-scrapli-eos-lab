@@ -27,25 +27,25 @@ steps:
       branch:
         - dev
   
-  # - name: merge to main 
-  #   image: vireakouk/netdevops-drone-nornir-scrapli:latest
-  #   commands:
-  #     - git checkout main
-  #     - git branch -u origin/main
-  #     - git merge dev
-  #     - git push http://$GITLAB_USER:$GITLAB_PASS:192.168.1.200/vireakouk/${DRONE_REPO}
-  #   secrets: [ GITLAB_USER, GITLAB_PASS ]
-  #   when:
-  #     branch:
-  #       - dev
+  - name: merge to main 
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    commands:
+      - git checkout main
+      - git branch -u origin/main
+      - git merge dev
+      - git push http://$GITLAB_USER:$GITLAB_PASS:192.168.1.200/vireakouk/${DRONE_REPO}
+    secrets: [ GITLAB_USER, GITLAB_PASS ]
+    when:
+      branch:
+        - dev
         
-  # - name: deploy to production
-  #   image: vireakouk/netdevops-drone-nornir-scrapli
-  #   commands:
-  #     - python deploy_baseconfig.py
-  #   when:
-  #     branch:
-  #       - main
+  - name: deploy to production
+    image: vireakouk/netdevops-drone-nornir-scrapli
+    commands:
+      - python deploy_baseconfig.py
+    when:
+      branch:
+        - main
 
   # - name: send telegram notification
   #   image: appleboy/drone-telegram
