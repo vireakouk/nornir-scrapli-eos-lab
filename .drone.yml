@@ -21,7 +21,8 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - git checkout ${DRONE_BRANCH}
+      - apt-get install net-tools
+      - route
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
