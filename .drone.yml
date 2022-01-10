@@ -41,6 +41,7 @@ steps:
       - git remote -v
       - git remote rm origin
       - git remote add origin http://$GITLAB_USER:$GITLAB_PASS@192.168.1.200/${DRONE_REPO}.git
+      - git remote -v
       - git push --all
       - git push --tags
     when:
