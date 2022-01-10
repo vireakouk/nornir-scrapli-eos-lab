@@ -21,7 +21,6 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - apt-get install net-tools
       - route
       - git fetch
       - python deploy_baseconfig.py --dry_run

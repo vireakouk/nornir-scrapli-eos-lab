@@ -11,7 +11,7 @@ eos:
       # port: 22
       extras:
         # ssh_config_file: True
-        auth_strict_key: True
+        auth_strict_key: False
 
 spine:
   data:
