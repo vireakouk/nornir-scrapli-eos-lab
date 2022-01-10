@@ -14,16 +14,14 @@ steps:
       - git checkout ${DRONE_BRANCH}
   
   - name: dry run
-    image: ubuntu:20.04
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
     environment:
       NORNIR_USER:
         from_secret: NORNIR_USER
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - which python
-      - pip3 install nornir nornir-jinja2 nornir-scrapli nornir-utils
-      - python3 deploy_baseconfig.py --dry_run
+      - python deploy_baseconfig.py --dry_run
     when:
       branch:
         - dev
