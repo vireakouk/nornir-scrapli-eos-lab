@@ -14,13 +14,14 @@ steps:
       - git checkout ${DRONE_BRANCH}
   
   - name: dry run
-    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    image: python
     environment:
       NORNIR_USER:
         from_secret: NORNIR_USER
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
+      - pip install -r requirements.txt
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
