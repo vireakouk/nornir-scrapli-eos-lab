@@ -1,6 +1,6 @@
 import os
 
-def nornir_set_creds(nr, username=None, password=None):
+def nornir_set_creds(nr, username="admin", password="admin"):
     """
     Handler so credentials are not stored in cleartext. Scripts by Kirt Byers.
     """
