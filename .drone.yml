@@ -38,8 +38,11 @@ steps:
       - git checkout main
       - git branch -u origin/main
       - git merge dev
-      - echo $GITLAB_USER
-      - git push http://$GITLAB_USER:$GITLAB_PASS@192.168.1.200/${DRONE_REPO}.git
+      - git remote -v
+      - git remote rm local
+      - git remote add local http://$GITLAB_USER:$GITLAB_PASS@192.168.1.200/${DRONE_REPO}.git
+      - git push --all
+      - git push --tags
     when:
       branch:
         - dev
