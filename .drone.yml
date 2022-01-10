@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: netdevops cicd
+name: netdevops cicd proof of concept
 
 steps:
   - name: starting build
