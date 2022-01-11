@@ -54,7 +54,7 @@ steps:
         - main
 
   - name: send telegram notification
-    image: appleboy/drone-telegram
+    image: appleboy/drone-telegram:latest
     environment:
       TELEGRAM_USER_ID:
         from_secret: TELEGRAM_USER_ID
