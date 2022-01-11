@@ -67,11 +67,27 @@ steps:
       #     build {{build.number}} failed. Fix me please.
       #   {{/success}}
       message: >
-        {{#success build.status}} ✔ {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-        Commit: <http://192.168.0.200/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-        Branch: <https://192.168.0.200/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-        Author: {{ build.author }}      
-        Build: <{{ build.link }}| Drone Build {{ build.number }} ↗>
+      {{#success build.status}}
+      ✅ Build #{{build.number}} of `{{repo.name}}` succeeded.
+
+      📝 Commit by {{commit.author}} on `{{commit.branch}}`:
+
+      ```
+      {{commit.message}}
+      ```
+
+      🌐 {{ build.link }}
+      {{else}}
+      ❌ Build #{{build.number}} of `{{repo.name}}` failed.
+
+      📝 Commit by {{commit.author}} on `{{commit.branch}}`:
+
+      ```
+      {{commit.message}}
+      ```
+
+      🌐 {{ build.link }}
+      {{/success}}
       
     when:
       status: [ success, failure ]
