@@ -60,8 +60,6 @@ steps:
         from_secret: TELEGRAM_USER_ID
       TELEGRAM_TOKEN:
         from_secret: TELEGRAM_TOKEN
-    commands:
-      - echo $TELEGRAM_USER_ID
     settings:
       token: $TELEGRAM_TOKEN
       to: $TELEGRAM_USER_ID
