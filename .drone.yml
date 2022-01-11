@@ -3,7 +3,7 @@ type: docker
 name: netdevops cicd proof of concept
 
 steps:
-  - name: starting build
+  - name: preping build
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - echo 'starting build'
@@ -29,11 +29,6 @@ steps:
   
   - name: merge to main 
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
-    environment:
-      GITLAB_USER:
-        from_secret: GITLAB_USER
-      GITLAB_PASS:
-        from_secret: GITLAB_PASS
     commands:
       - git checkout main
       - git branch -u origin/main
@@ -58,14 +53,19 @@ steps:
       branch:
         - main
 
-  # - name: send telegram notification
-  #   image: appleboy/drone-telegram
-  #   settings:
-  #     token: xxxxxxxxxx
-  #     to: telegram_user_id
-  #     message: >
-  #       {{#success build.status}}
-  #         build {{build.number}} succeeded. Good job.
-  #       {{else}}
-  #         build {{build.number}} failed. Fix me please.
-  #       {{/success}}
+  - name: send telegram notification
+    image: appleboy/drone-telegram
+    environment:
+      TELEGRAM_API_ID:
+        from_secret: TELEGRAM_API_ID
+      TELEGRAM_API_HASH:
+        from_secret: TELEGRAM_API_HASH
+    settings:
+      token: $TELEGRAM_API_HASH
+      to: $TELEGRAM_API_ID
+      message: >
+        {{#success build.status}}
+          build {{build.number}} succeeded. Good job.
+        {{else}}
+          build {{build.number}} failed. Fix me please.
+        {{/success}}
