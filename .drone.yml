@@ -73,6 +73,7 @@ steps:
           ```
           {{ commit.message }}
           ```
+          🌐 {{ commit.link }}
           🌐 {{ build.link }}
         {{else}}
           ❌ Build #{{ build.number }} of `{{ repo.name }}` failed.
@@ -80,6 +81,7 @@ steps:
           ```
           {{ commit.message }}
           ```
+          🌐 {{ commit.link }}
           🌐 {{ build.link }}
         {{/success}}
       
