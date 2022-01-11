@@ -56,13 +56,13 @@ steps:
   - name: send telegram notification
     image: appleboy/drone-telegram
     environment:
-      TELEGRAM_API_ID:
-        from_secret: TELEGRAM_API_ID
-      TELEGRAM_API_HASH:
-        from_secret: TELEGRAM_API_HASH
+      TELEGRAM_USER_ID:
+        from_secret: TELEGRAM_USER_ID
+      TELEGRAM_TOKEN:
+        from_secret: TELEGRAM_TOKEN
     settings:
-      token: $TELEGRAM_API_HASH
-      to: $TELEGRAM_API_ID
+      token: $TELEGRAM_TOKEN
+      to: $TELEGRAM_USER_ID
       message: >
         {{#success build.status}}
           build {{build.number}} succeeded. Good job.
