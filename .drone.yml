@@ -60,9 +60,24 @@ steps:
         from_secret: TELEGRAM_TOKEN
       to:
         from_secret: TELEGRAM_USER_ID
+      # message: >
+      #   {{#success build.status}}
+      #     build {{build.number}} succeeded. Good job.
+      #   {{else}}
+      #     build {{build.number}} failed. Fix me please.
+      #   {{/success}}
       message: >
-        {{#success build.status}}
-          build {{build.number}} succeeded. Good job.
-        {{else}}
-          build {{build.number}} failed. Fix me please.
-        {{/success}}
+        
+        {{#success build.status}} ✔ {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+        
+        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+
+        Author: {{ build.author }}      
+
+        Build: <{{ build.link }}| Drone Build {{ build.number }} ↗>
+      
+    when:
+      status: [ success, failure ]
+      branch: [ main, dev ]
