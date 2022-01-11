@@ -69,20 +69,20 @@ steps:
       message: >
         {{#success build.status}}
           ✅ Build #{{ build.number }} of `{{ repo.name }}` succeeded.
-          📝 Commit by {{ commit.author }} on `{{ commit.branch }}`:
+          📝 Committed by {{ commit.author }} on `{{ commit.branch }}`:
           ```
           {{ commit.message }}
           ```
-          🌐 {{ commit.link }}
-          🌐 {{ build.link }}
+          🌐 Commit Link: {{ commit.link }}
+          🌐 Build Link: {{ build.link }}
         {{else}}
           ❌ Build #{{ build.number }} of `{{ repo.name }}` failed.
-          📝 Commit by {{ commit.author }} on `{{ commit.branch }}`:
+          📝 Committed by {{ commit.author }} on `{{ commit.branch }}`:
           ```
           {{ commit.message }}
           ```
-          🌐 {{ commit.link }}
-          🌐 {{ build.link }}
+          🌐 Commit Link: {{ commit.link }}
+          🌐 Build Link: {{ build.link }}
         {{/success}}
       
     when:
