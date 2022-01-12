@@ -2,3 +2,5 @@ nornir
 nornir-jinja2
 nornir-scrapli
 nornir-utils
+pybatfish
+rich
