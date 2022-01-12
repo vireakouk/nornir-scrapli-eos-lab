@@ -12,11 +12,11 @@ steps:
       - pip list
       - git checkout ${DRONE_BRANCH}
   
-  - name: predeployment test
+  - name: pre-deployment test
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - pip install pybatfish rich
-      - python predeploy_test.py
+      - python deploy_test.py
     when:
       branch:
         - dev
@@ -44,6 +44,7 @@ steps:
       - git remote -v
       - git push --all
       - git push --tags
+      
     when:
       branch:
         - dev
@@ -60,6 +61,16 @@ steps:
     when:
       branch:
         - main
+
+  - name: post-deployment test
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    commands:
+      - pip install pybatfish rich
+      - python backup_cfg.py
+      - python deploy_test.py
+    when:
+      branch:
+        - dev
 
   - name: send telegram notification
     image: appleboy/drone-telegram
