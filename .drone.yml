@@ -66,11 +66,11 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - pip install pybatfish rich
-      - python backup_cfg.py
+      - python backup_config.py
       - python deploy_test.py
     when:
       branch:
-        - dev
+        - main
 
   - name: send telegram notification
     image: appleboy/drone-telegram
