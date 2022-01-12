@@ -10,9 +10,18 @@ steps:
       - git --version
       - python --version
       - pip list
-      - git fetch
       - git checkout ${DRONE_BRANCH}
   
+  - name: predeployment test
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    commands:
+      - pip install pybatfish rich
+      - python backup_config.py
+      - python predeploy_test.py
+    when:
+      branch:
+        - dev
+        
   - name: dry run
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     environment:
@@ -60,12 +69,6 @@ steps:
         from_secret: TELEGRAM_TOKEN
       to:
         from_secret: TELEGRAM_USER_ID
-      # message: >
-      #   {{#success build.status}}
-      #     build {{build.number}} succeeded. Good job.
-      #   {{else}}
-      #     build {{build.number}} failed. Fix me please.
-      #   {{/success}}
       message: >
         {{#success build.status}}
           ✅ Build #{{ build.number }} of `{{ repo.name }}` succeeded.

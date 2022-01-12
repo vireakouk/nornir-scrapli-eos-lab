@@ -64,7 +64,7 @@ if __name__ == "__main__":
     SNAPSHOT_NAME = f"snapshot-{datetime.today().strftime('%Y-%m-%d')}"
     SNAPSHOT_DIR = "./snapshots"
 
-    bf_session.host = "localhost"
+    bf_session.host = "192.168.0.200"
     bf_set_network(NETWORK_NAME)
     init_snap = bf_init_snapshot(SNAPSHOT_DIR, name=SNAPSHOT_NAME, overwrite=True)
     load_questions()
