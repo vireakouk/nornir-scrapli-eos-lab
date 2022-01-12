@@ -15,7 +15,7 @@ def backup_cfg(task: Task) -> Result:
     task.host["config"] = r.result
     print_result(r)
     
-    with open (f"./snapshots/configs/{task.host}.txt", "w", encoding="utf-8") as file:
+    with open (f"./snapshots/configs/{task.host}.cfg", "w", encoding="utf-8") as file:
         file.write(task.host["config"])
 
 
