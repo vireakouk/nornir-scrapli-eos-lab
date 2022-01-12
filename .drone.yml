@@ -16,7 +16,6 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - pip install pybatfish rich
-      - python backup_config.py
       - python predeploy_test.py
     when:
       branch:
