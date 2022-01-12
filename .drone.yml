@@ -16,7 +16,7 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - pip install pybatfish rich
-      - python deploy_test.py
+      - python test.py
     when:
       branch:
         - dev
@@ -44,7 +44,6 @@ steps:
       - git remote -v
       - git push --all
       - git push --tags
-      
     when:
       branch:
         - dev
@@ -66,8 +65,7 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - pip install pybatfish rich
-      - python backup_config.py
-      - python deploy_test.py
+      - python test.py
     when:
       branch:
         - main
@@ -97,7 +95,6 @@ steps:
           🌐 Commit Link: {{ commit.link }}
           🌐 Build Link: {{ build.link }}
         {{/success}}
-      
     when:
       status: [ success, failure ]
       branch: [ main, dev ]
