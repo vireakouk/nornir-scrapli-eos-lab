@@ -39,7 +39,7 @@ steps:
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - git checkout main
-      - git branch -u origin/main
+      # - git branch -u origin/main
       - git merge dev
       - git push --all
       - git push --tags
