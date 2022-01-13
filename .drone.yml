@@ -38,6 +38,7 @@ steps:
   - name: merge to main 
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
+      - git fetch --all
       - git checkout main
       - git branch -u origin/main
       - git remote -v
