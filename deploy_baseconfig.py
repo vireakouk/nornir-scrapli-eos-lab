@@ -31,7 +31,7 @@ def deploy_base(task: Task) -> Result:
             commands=["show run", "write memory"])
 
 if __name__ == "__main__":
-    nr = InitNornir(config_file="config.yml")
+    nr = InitNornir(config_file="config.yml", core={"raise_on_error": True})
     nornir_set_creds(nr)
     r = nr.run(task=deploy_base)
     print_result(r)    

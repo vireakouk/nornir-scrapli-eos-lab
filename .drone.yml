@@ -1,18 +1,26 @@
 kind: pipeline
 type: docker
-name: netdevops cicd
+name: netdevops cicd proof of concept
 
 steps:
-  - name: starting build
+  - name: preping build
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     commands:
       - echo 'starting build'
       - git --version
       - python --version
       - pip list
-      - git fetch
       - git checkout ${DRONE_BRANCH}
   
+  - name: pre-deployment test
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    commands:
+      - pip install pybatfish rich
+      - python test.py
+    when:
+      branch:
+        - dev
+        
   - name: dry run
     image: vireakouk/netdevops-drone-nornir-scrapli:latest
     environment:
@@ -21,39 +29,72 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
+      - git fetch
       - python deploy_baseconfig.py --dry_run
     when:
       branch:
         - dev
   
-  # - name: merge to main 
-  #   image: vireakouk/netdevops-drone-nornir-scrapli:latest
-  #   commands:
-  #     - git checkout main
-  #     - git branch -u origin/main
-  #     - git merge dev
-  #     - git push http://$GITLAB_USER:$GITLAB_PASS:192.168.1.200/vireakouk/${DRONE_REPO}
-  #   secrets: [ GITLAB_USER, GITLAB_PASS ]
-  #   when:
-  #     branch:
-  #       - dev
+  - name: merge to main 
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    commands:
+      - git checkout main
+      - git branch -u origin/main
+      - git merge dev
+      - git remote -v
+      - git push --all
+      - git push --tags
+    when:
+      branch:
+        - dev
         
-  # - name: deploy to production
-  #   image: vireakouk/netdevops-drone-nornir-scrapli
-  #   commands:
-  #     - python deploy_baseconfig.py
-  #   when:
-  #     branch:
-  #       - main
+  - name: deploy to production
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    environment:
+      NORNIR_USER:
+        from_secret: NORNIR_USER
+      NORNIR_SECRET:
+        from_secret: NORNIR_SECRET
+    commands:
+      - python deploy_baseconfig.py
+    when:
+      branch:
+        - main
 
-  # - name: send telegram notification
-  #   image: appleboy/drone-telegram
-  #   settings:
-  #     token: xxxxxxxxxx
-  #     to: telegram_user_id
-  #     message: >
-  #       {{#success build.status}}
-  #         build {{build.number}} succeeded. Good job.
-  #       {{else}}
-  #         build {{build.number}} failed. Fix me please.
-  #       {{/success}}
+  - name: post-deployment test
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    commands:
+      - pip install pybatfish rich
+      - python test.py
+    when:
+      branch:
+        - main
+
+  - name: send telegram notification
+    image: appleboy/drone-telegram
+    settings:
+      token: 
+        from_secret: TELEGRAM_TOKEN
+      to:
+        from_secret: TELEGRAM_USER_ID
+      message: >
+        {{#success build.status}}
+          ✅ Build #{{ build.number }} of `{{ repo.name }}` succeeded.
+          📝 Committed by {{ commit.author }} on `{{ commit.branch }}`:
+          ```
+          {{ commit.message }}
+          ```
+          🌐 Commit Link: {{ commit.link }}
+          🌐 Build Link: {{ build.link }}
+        {{else}}
+          ❌ Build #{{ build.number }} of `{{ repo.name }}` failed.
+          📝 Committed by {{ commit.author }} on `{{ commit.branch }}`:
+          ```
+          {{ commit.message }}
+          ```
+          🌐 Commit Link: {{ commit.link }}
+          🌐 Build Link: {{ build.link }}
+        {{/success}}
+    when:
+      status: [ success, failure ]
+      branch: [ main, dev ]

@@ -9,25 +9,25 @@ topology:
   nodes:
     spine1:
       kind: ceos
-      mgmt_ipv4: 172.100.1.11
+      mgmt_ipv4: 172.20.20.111
     spine2:
       kind: ceos
-      mgmt_ipv4: 172.100.1.12
+      mgmt_ipv4: 172.20.20.112
     leaf1:
       kind: ceos
-      mgmt_ipv4: 172.100.1.13
+      mgmt_ipv4: 172.20.20.121
     leaf2:
       kind: ceos
-      mgmt_ipv4: 172.100.1.14
+      mgmt_ipv4: 172.20.20.122
 
     client1:
       kind: linux
-      mgmt_ipv4: 172.100.1.21
+      mgmt_ipv4: 172.20.20.131
       env:
         TMODE: static
     client2:
       kind: linux
-      mgmt_ipv4: 172.100.1.22
+      mgmt_ipv4: 172.20.20.132
       env:
         TMODE: static
 
@@ -42,6 +42,6 @@ topology:
     - endpoints: ["client1:eth1", "leaf1:eth3"]
     - endpoints: ["client2:eth1", "leaf2:eth3"]
 mgmt:
-  network: eos_oob               
-  ipv4_subnet: 172.100.1.0/24       
-  ipv6_subnet: 2001:172:100:1::/80
+  network: cicd-net               
+  ipv4_subnet: 172.20.20.0/24      
+  # ipv6_subnet: 2001:172:100:1::/80

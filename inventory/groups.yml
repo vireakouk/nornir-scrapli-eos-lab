@@ -4,13 +4,13 @@ global:
     asn: 65001
 
 eos:
-  port: 6030
+  # port: 6030
   connection_options:
     scrapli:
       platform: arista_eos
-      port: 22
+      # port: 22
       extras:
-        ssh_config_file: True
+        # ssh_config_file: True
         auth_strict_key: False
 
 spine:

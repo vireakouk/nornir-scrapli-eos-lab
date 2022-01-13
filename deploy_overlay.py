@@ -4,7 +4,7 @@ from nornir_utils.plugins.functions import print_result
 from nornir_jinja2.plugins.tasks import template_file
 from nornir_scrapli.tasks import send_commands, send_config
 
-def deploy_int(task: Task) -> Result:
+def deploy_over(task: Task) -> Result:
     r = task.run(task=template_file, 
                 template="overlay.j2",
                 path="./templates")
@@ -21,5 +21,5 @@ def deploy_int(task: Task) -> Result:
 
 if __name__ == "__main__":
     nr = InitNornir(config_file="config.yml")
-    r = nr.run(task=deploy_int)
+    r = nr.run(task=deploy_over)
     print_result(r)
