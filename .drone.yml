@@ -41,7 +41,6 @@ steps:
       - git checkout main
       - git branch -u origin/main
       - git merge dev
-      - git remote -v
       - git push --all
       - git push --tags
     when:
