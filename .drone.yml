@@ -30,7 +30,7 @@ steps:
         from_secret: NORNIR_SECRET
     commands:
       - git fetch
-      - python deploy_baseconfig.py --dry_run
+      - python update_config.py --dry_run
     when:
       branch:
         - dev
@@ -56,7 +56,7 @@ steps:
       NORNIR_SECRET:
         from_secret: NORNIR_SECRET
     commands:
-      - python deploy_baseconfig.py
+      - python update_config.py
     when:
       branch:
         - main
