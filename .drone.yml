@@ -44,7 +44,6 @@ steps:
       - git remote -v
       - git merge dev
       - git push --all
-      - git push --tags
     when:
       branch:
         - dev
