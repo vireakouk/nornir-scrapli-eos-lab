@@ -68,6 +68,14 @@ steps:
     when:
       branch:
         - main
+  
+  - name: backup config
+    image: vireakouk/netdevops-drone-nornir-scrapli:latest
+    commands:
+      - python backup_config.py
+    when:
+      branch:
+        - main
 
   - name: send telegram notification
     image: appleboy/drone-telegram
