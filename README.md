@@ -7,6 +7,9 @@ Network automation lab using nornir, scrapli, and containerlab with Arista EOS.
 3. Deploy underlay BGP configs to
 4. Deploy overlay BGP EVPN configs 
 5. Provision vxlan across leaf nodes with user-defined parameters
+6. Backup config
+7. Update config for CICD
+8. Batfish test script for CICD
 
 # Tools
 1. Containerlab (https://containerlab.srlinux.dev/)
@@ -441,5 +444,13 @@ leaf2#
 # Extension of script functionality 
 The template is standard jinja2 template which you can add more parameters to the base or interface configs. For example in base config, we can add further template for aaa, logging, ntp, logging..etc.
 
-# More configuration tasks 
-(coming soon)
+# CICD
+The CICD pipeline is defined in the `.drone.yml` file. This pipeline is a cloned version of the great work by Julio Perez https://github.com/JulioPDX/ci_cd_dev with a few minor changes:
+1. Use of local Gitlab running in my local machine instead of public Github. Therefore Ngrok is not needed.
+2. Use of scrapli instead of napalm
+3. Removal of Suzieq test step (to be added later after I got more familiar with it)
+4. Addition of Chatops notification step using Telegram bot
+5. A docker-compose to spin up a local Gitlab and Drone is in my other repo cicd-stack https://github.com/vireakouk/cicd-stack 
+6. A docker image with Git, Nornir, and Scrapli for the Drone docker pipeline is created by a Dockerfile here https://github.com/vireakouk/docker-images/tree/main/netdevops-drone-nornir-scrapli
+
+For detail step by step documentations, please head over to Julio's blog https://juliopdx.com/2021/10/20/building-a-network-ci-cd-pipeline-part-1/
