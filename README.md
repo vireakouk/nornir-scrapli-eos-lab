@@ -17,6 +17,9 @@ Network automation lab using nornir, scrapli, and containerlab with Arista EOS.
 3. nornir_utils (https://github.com/nornir-automation/nornir_utils)
 4. nornir-jinja2 (https://github.com/nornir-automation/nornir_jinja2)
 5. nornir-scrapli (https://github.com/scrapli/nornir_scrapli)
+6. Batfish (https://github.com/batfish/batfish)
+7. Gitlab
+8. Drone CI
 
 # My environment
 - Ubuntu Server 20.04 LTS x86_64 with 32GB RAM running in VirtualBox (Windows 10 Pro). This lab only consumes a bit less than 4GB of RAM.
@@ -445,12 +448,14 @@ leaf2#
 The template is standard jinja2 template which you can add more parameters to the base or interface configs. For example in base config, we can add further template for aaa, logging, ntp, logging..etc.
 
 # CICD
-The CICD pipeline is defined in the `.drone.yml` file. This pipeline is a cloned version of the great work by Julio Perez https://github.com/JulioPDX/ci_cd_dev with a few minor changes:
+The CICD pipeline is defined in the `.drone.yml` file. This pipeline is a cloned version of the great work by Julio Perez https://github.com/JulioPDX/ci_cd_dev with a few minor changes.
 1. Use of local Gitlab running in my local machine instead of public Github. Therefore Ngrok is not needed.
-2. Use of scrapli instead of napalm
-3. Removal of Suzieq test step (to be added later after I got more familiar with it)
-4. Addition of Chatops notification step using Telegram bot
-5. A docker-compose to spin up a local Gitlab and Drone is in my other repo cicd-stack https://github.com/vireakouk/cicd-stack 
-6. A docker image with Git, Nornir, and Scrapli for the Drone docker pipeline is created by a Dockerfile here https://github.com/vireakouk/docker-images/tree/main/netdevops-drone-nornir-scrapli
+2. Use of `scrapli` instead of `napalm`
+3. Use of two branches: `dev` for development (dry_run) and `main` for actual deployment (no_dry_run)
+4. Removal of Suzieq test step (to be added later after I got more familiar with it)
+5. Addition of Chatops notification step using Telegram bot
+6. A docker-compose to spin up a local Gitlab and Drone is in my other repo `cicd-stack` https://github.com/vireakouk/cicd-stack 
+7. A docker image with Git, Nornir, and Scrapli for the Drone docker pipeline is created by a `Dockerfile` here https://github.com/vireakouk/docker-images/tree/main/netdevops-drone-nornir-scrapli
 
-For detail step by step documentations, please head over to Julio's blog https://juliopdx.com/2021/10/20/building-a-network-ci-cd-pipeline-part-1/
+For detail step-by-step documentations, please head over to Julio's blog https://juliopdx.com/2021/10/20/building-a-network-ci-cd-pipeline-part-1/
+I have also learnt from and followed the steps by Hank Preston's NetDevOps CICD demo https://github.com/hpreston/netdevops_demos/tree/master/cicd_01 
